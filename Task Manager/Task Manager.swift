@@ -25,6 +25,8 @@ class TaskManager {
     
     var taskArray: [Task] = []
     
+    
+
     func addTask() {
         
         var taskName: String? = nil
@@ -41,7 +43,20 @@ class TaskManager {
             break
         } while taskName == nil
         
-        taskArray.append(Task(task: taskName!))
+        var taskPriority: String? = nil
+        print("Please enter the priority of the task you added: High: H, Average: A, Low: L")
+        repeat {
+            let line = readLine()!.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if line == "H" || line == "A" || line == "L" {
+                taskName = line
+            } else {
+                print("Invalid input")
+                taskName = nil
+            }
+        } while taskName == nil
+        
+        taskArray.append(Task(task: taskName!, priority: taskPriority!))
         NSKeyedArchiver.archiveRootObject(taskArray, toFile: filePath)
         print("\n")
         print("Your new list of tasks is:")
@@ -82,7 +97,7 @@ class TaskManager {
                 print("\(index). \(taskArray[index].task)")
             }
         }
-      
+        
         print("\n")
     }
     
@@ -138,7 +153,7 @@ class TaskManager {
         
         let validInput: Int? = nil
         print("Please enter the number of the task you want to change to incomplete:")
-
+        
         repeat {
             var userInput = Int(readLine()!)
             while userInput == nil {

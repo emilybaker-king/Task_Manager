@@ -60,7 +60,7 @@ class Menu {
     }
     
     
-
+    
     
     func quit() {
         shouldQuit = true
@@ -93,13 +93,13 @@ class Menu {
             taskManager.listNotCompletedTasks()
             menuOptions()
         case "2":
-           taskManager.listNotCompletedTasks()
+            taskManager.listNotCompletedTasks()
             menuOptions()
         case "3":
-           taskManager.listCompletedTasks()
+            taskManager.listCompletedTasks()
             menuOptions()
         case "4":
-           taskManager.completeTask()
+            taskManager.completeTask()
             menuOptions()
         case "5":
             taskManager.CompleteToIncomplete()
@@ -108,7 +108,7 @@ class Menu {
             taskManager.addTask()
             menuOptions()
         case "7":
-          taskManager.removeTask()
+            taskManager.removeTask()
             menuOptions()
         case "8":
             menuOptions()

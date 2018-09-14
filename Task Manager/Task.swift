@@ -16,23 +16,27 @@ class Task: NSObject, NSCoding {
     
     var dueDate: Date?
     
+     var priority: String
     
-    init(task: String) {
+    init(task: String, priority: String) {
         self.task = task
+        self.priority = priority
     }
     
     
     
-    init(task: String, completed: Bool, dueDate: Date?) {
+    init(task: String, completed: Bool, dueDate: Date?, priority: String) {
         self.task = task
         self.completed = completed
         self.dueDate = dueDate
+        self.priority = priority
     }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(task, forKey: "task")
         aCoder.encode(completed, forKey: "completed")
         aCoder.encode(dueDate, forKey: "dueDate")
+        aCoder.encode(priority, forKey: "priority")
     }
     
     convenience required init?(coder aDecoder: NSCoder) {
@@ -42,13 +46,19 @@ class Task: NSObject, NSCoding {
                 return nil
         }
         
+        guard let priority = aDecoder.decodeObject(forKey: "priority") as? String
+            else {
+                return nil
+        }
+        
         let completed = aDecoder.decodeBool(forKey: "completed")
         
         if let dueDate = aDecoder.decodeObject(forKey: "dueDate") as? Date {
-            self.init(task: task, completed: completed, dueDate: dueDate)
+            self.init(task: task, completed: completed, dueDate: dueDate, priority: priority)
         } else {
-            self.init(task: task, completed: completed, dueDate: nil)
+            self.init(task: task, completed: completed, dueDate: nil, priority: priority)
         }
+        
     }
     
 }
