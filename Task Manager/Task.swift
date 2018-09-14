@@ -12,7 +12,7 @@ class Task: NSObject, NSCoding {
     
     var task: String
     
-    var completed = true
+    var completed = false
     
     var dueDate: Date?
     

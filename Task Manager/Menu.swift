@@ -11,8 +11,10 @@ import Foundation
 
 class Menu {
     
+    
     var shouldQuit = false 
     
+    let taskManager = TaskManager()
     
     func go() {
         menuOptions()
@@ -50,7 +52,7 @@ class Menu {
     
     
     func validateInput (_ input: String) -> Bool {
-        let menuOptions = Array(1...8)
+        let menuOptions = Array(1...9)
         
         guard let number = Int(input) else { return false }
         
@@ -58,9 +60,11 @@ class Menu {
     }
     
     
+
+    
     func quit() {
         shouldQuit = true
-        print("Thanks for using the video game library")
+        print("Thanks for using the task manager")
     }
     
     
@@ -73,9 +77,10 @@ class Menu {
             3 List completed tasks
             4 Mark task as complete
             5 Change a completed task to incomplete
-            6 Delete a task
-            7 Help
-            8 Exit program
+            6 Add a task
+            7 Delete a task
+            8 Help
+            9 Exit program
 
             """)
     }
@@ -84,32 +89,33 @@ class Menu {
     func handleInput(_ input: String) {
         switch input {
         case "1":
-
+            taskManager.listCompletedTasks()
+            taskManager.listNotCompletedTasks()
             menuOptions()
         case "2":
-           
+           taskManager.listNotCompletedTasks()
             menuOptions()
         case "3":
-           
+           taskManager.listCompletedTasks()
             menuOptions()
         case "4":
-           
+           taskManager.completeTask()
             menuOptions()
         case "5":
-            
+            taskManager.CompleteToIncomplete()
             menuOptions()
         case "6":
-          
+            taskManager.addTask()
             menuOptions()
         case "7":
+          taskManager.removeTask()
             menuOptions()
         case "8":
+            menuOptions()
+        case "9":
             quit()
         default:
             break
         }
     }
-    
-    
-    
 }
