@@ -10,5 +10,18 @@ import Foundation
 
 print("Welcome to your task manager:")
 let menu = Menu()
+
+print("Password:")
+var input: String? = nil
+repeat {
+    let line = readLine()!.trimmingCharacters(in: .whitespacesAndNewlines)
+    
+    if line == "password" {
+        input = line
+    } else {
+        print("Invalid password")
+    }
+} while input == nil
+
 menu.go()
 

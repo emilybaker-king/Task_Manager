@@ -49,12 +49,12 @@ class TaskManager {
             let line = readLine()!.trimmingCharacters(in: .whitespacesAndNewlines)
             
             if line == "H" || line == "A" || line == "L" {
-                taskName = line
+                taskPriority = line
             } else {
                 print("Invalid input")
-                taskName = nil
+                taskPriority = nil
             }
-        } while taskName == nil
+        } while taskPriority == nil
         
         taskArray.append(Task(task: taskName!, priority: taskPriority!))
         NSKeyedArchiver.archiveRootObject(taskArray, toFile: filePath)
@@ -62,7 +62,7 @@ class TaskManager {
         print("Your new list of tasks is:")
         
         for task in taskArray {
-            print(task.task)
+            print("\(task.task) : \(task.priority)")
         }
         print("\n")
     }
@@ -74,7 +74,7 @@ class TaskManager {
             print("\(index). \(taskArray[index].task)")
         }
         
-        print("Enter the number of the game you wish to remove:")
+        print("Enter the number of the task you wish to remove:")
         
         var userInput = Int(readLine()!)
         while userInput == nil {
@@ -92,10 +92,8 @@ class TaskManager {
     func listNotCompletedTasks() {
         print("These are the tasks you need to complete:")
         
-        for index in 0..<taskArray.count {
-            if !taskArray[index].completed {
-                print("\(index). \(taskArray[index].task)")
-            }
+        for task in getUnavailableTasks() {
+            print("\(task.task) : \(task.priority)")
         }
         
         print("\n")
@@ -105,12 +103,36 @@ class TaskManager {
     func listCompletedTasks() {
         
         print("The following tasks are completed:")
-        for index in 0..<taskArray.count {
-            if taskArray[index].completed {
-                print("\(index). \(taskArray[index].task)")
-            }
+        for task in getAvailableTasks() {
+            print("\(task.task) : \(task.priority)")
         }
         print("\n")
+    }
+    
+    
+    
+    func getUnavailableTasks() -> [Task] {
+        var unavailableTasks = [Task]()
+        
+        for task in taskArray {
+            if !task.completed {
+                unavailableTasks.append(task)
+            }
+        }
+        return unavailableTasks
+    }
+    
+    
+    
+    func getAvailableTasks() -> [Task] {
+        var availableTasks = [Task]()
+        
+        for task in taskArray {
+            if task.completed {
+                availableTasks.append(task)
+            }
+        }
+        return availableTasks
     }
     
     
@@ -119,20 +141,28 @@ class TaskManager {
         
         print("What task do you want to complete?")
         
-        listNotCompletedTasks()
+        let unavailableTasks = getUnavailableTasks()
+        
+        if unavailableTasks.count == 0 {
+            print("No tasks to complete \n")
+            return
+        }
+        
+        for index in 0..<unavailableTasks.count {
+            
+            print("\(index). \(unavailableTasks[index].task)")
+        }
         
         let validInput: Int? = nil
-        print("Please enter the number of the task you want to complete:")
         repeat {
-            
+            print("Please enter the number of the task you want to complete:")
             var userInput = Int(readLine()!)
             while userInput == nil {
-                print("Invalid input. Please enter a usable number.")
+                print("Invalid input. Please enter a number on the list.")
                 userInput = Int(readLine()!)
             }
-            if userInput! > taskArray.count {
+            if userInput! >= taskArray.count {
                 print("Invalid input, please type a number on the list.")
-                userInput = Int(readLine()!)
             } else {
                 taskArray[userInput!].completed = true
                 NSKeyedArchiver.archiveRootObject(taskArray, toFile: filePath)
@@ -149,7 +179,17 @@ class TaskManager {
         
         print("What task do you want to mark incomplete?")
         
-        listCompletedTasks()
+        let availableTasks = getAvailableTasks()
+        
+        if availableTasks.count == 0 {
+            print("No completed tasks. \n")
+            return
+        }
+        
+        for index in 0..<availableTasks.count {
+            
+            print("\(index). \(availableTasks[index].task)")
+        }
         
         let validInput: Int? = nil
         print("Please enter the number of the task you want to change to incomplete:")
@@ -165,7 +205,7 @@ class TaskManager {
             } else {
                 taskArray[userInput!].completed = false
                 NSKeyedArchiver.archiveRootObject(taskArray, toFile: filePath)
-                print("Thank you for checking in \(taskArray[userInput!].task) \n")
+                print("You now need to finish \(taskArray[userInput!].task) \n")
                 break
             }
         } while validInput == nil
