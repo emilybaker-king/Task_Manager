@@ -11,6 +11,7 @@ import Foundation
 
 class TaskManager {
     
+    //persistence
     var filePath: String {
         let manager = FileManager.default
         let url = manager.urls(for: .documentDirectory, in: .userDomainMask).first
@@ -23,15 +24,17 @@ class TaskManager {
         }
     }
     
+    //the array of tasks
     var taskArray: [Task] = []
     
     
-
+    //this function will add tasks to the list
     func addTask() {
         
         var taskName: String? = nil
         print("What is your new task?")
         
+        //this repeat takes user input to make a task
         repeat {
             let line = readLine()!
             
@@ -43,6 +46,7 @@ class TaskManager {
             break
         } while taskName == nil
         
+        //this repeat takes user input to make a priority and they have to give one of the three values listed
         var taskPriority: String? = nil
         print("Please enter the priority of the task you added: High: H, Average: A, Low: L")
         repeat {
@@ -56,6 +60,7 @@ class TaskManager {
             }
         } while taskPriority == nil
         
+        //persistence
         taskArray.append(Task(task: taskName!, priority: taskPriority!))
         NSKeyedArchiver.archiveRootObject(taskArray, toFile: filePath)
         print("\n")
@@ -67,15 +72,17 @@ class TaskManager {
         print("\n")
     }
     
-    
+    //this removes a task
     func removeTask() {
         
+        //this lists the tasks and puts them with a number so you can ask the user to put in a value that will be in the index
         for index in 0..<taskArray.count {
             print("\(index). \(taskArray[index].task)")
         }
         
         print("Enter the number of the task you wish to remove:")
         
+        //this removes the task that the user puts in
         var userInput = Int(readLine()!)
         while userInput == nil {
             print("Invalid input. Please enter a usable number")
@@ -88,7 +95,7 @@ class TaskManager {
         
     }
     
-    
+    //this lists the task that need to be completed
     func listNotCompletedTasks() {
         print("These are the tasks you need to complete:")
         
@@ -100,6 +107,7 @@ class TaskManager {
     }
     
     
+    //this list all the tasks that are completed
     func listCompletedTasks() {
         
         print("The following tasks are completed:")
@@ -110,7 +118,7 @@ class TaskManager {
     }
     
     
-    
+    //this puts the tasks that need to be completed into an array
     func getUnavailableTasks() -> [Task] {
         var unavailableTasks = [Task]()
         
@@ -123,7 +131,7 @@ class TaskManager {
     }
     
     
-    
+    //this puts the tasks that are completed into an array
     func getAvailableTasks() -> [Task] {
         var availableTasks = [Task]()
         
@@ -136,11 +144,12 @@ class TaskManager {
     }
     
     
-    
+    //this lets you complete a task
     func completeTask() {
         
         print("What task do you want to complete?")
         
+        //this uses the getunavailableTasks array and list it so it can be used to find the tasks the user wants to complete
         let unavailableTasks = getUnavailableTasks()
         
         if unavailableTasks.count == 0 {
@@ -148,11 +157,13 @@ class TaskManager {
             return
         }
         
+        //this lists the tasks out so it is easy for the uer to choose one
         for index in 0..<unavailableTasks.count {
             
             print("\(index). \(unavailableTasks[index].task)")
         }
         
+        //this repeat keeps going until the user puts in a valid number on the list to complete the task
         let validInput: Int? = nil
         repeat {
             print("Please enter the number of the task you want to complete:")
@@ -174,11 +185,12 @@ class TaskManager {
     }
     
     
-    
+    //this changes a completed task to incomplete
     func CompleteToIncomplete() {
         
         print("What task do you want to mark incomplete?")
         
+        //this uses the getAvailableTasks array to list the tasks that are completed to so they can be chose to be changed to incomplete
         let availableTasks = getAvailableTasks()
         
         if availableTasks.count == 0 {
@@ -186,6 +198,7 @@ class TaskManager {
             return
         }
         
+        //this lists them so the user can easily find which task they want
         for index in 0..<availableTasks.count {
             
             print("\(index). \(availableTasks[index].task)")
@@ -194,6 +207,7 @@ class TaskManager {
         let validInput: Int? = nil
         print("Please enter the number of the task you want to change to incomplete:")
         
+        //this repeat makes sure the user input is in the index and if it's not then keeps going until they input something right.
         repeat {
             var userInput = Int(readLine()!)
             while userInput == nil {

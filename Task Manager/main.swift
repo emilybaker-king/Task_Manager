@@ -11,6 +11,7 @@ import Foundation
 print("Welcome to your task manager:")
 let menu = Menu()
 
+//you have to put the assigned password in before the task manager will run
 print("Password:")
 var input: String? = nil
 repeat {
@@ -23,5 +24,6 @@ repeat {
     }
 } while input == nil
 
+//this makes the task manager run
 menu.go()
 

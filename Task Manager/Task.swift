@@ -24,7 +24,7 @@ class Task: NSObject, NSCoding {
     }
     
     
-    
+    //this initializes the above variables
     init(task: String, completed: Bool, dueDate: Date?, priority: String) {
         self.task = task
         self.completed = completed
@@ -32,6 +32,7 @@ class Task: NSObject, NSCoding {
         self.priority = priority
     }
     
+    //this is the persistence
     func encode(with aCoder: NSCoder) {
         aCoder.encode(task, forKey: "task")
         aCoder.encode(completed, forKey: "completed")

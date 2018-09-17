@@ -16,6 +16,7 @@ class Menu {
     
     let taskManager = TaskManager()
     
+    //This is what you call in the main to make the task manager start
     func go() {
         menuOptions()
         
@@ -35,6 +36,7 @@ class Menu {
     }
     
     
+    //This takes the initial input after yhta password and assesses it
     func getInput () -> String {
         var input: String? = nil
         repeat {
@@ -51,6 +53,7 @@ class Menu {
     }
     
     
+    //This makes sure the above input is a part of the menu that is listed
     func validateInput (_ input: String) -> Bool {
         let menuOptions = Array(1...9)
         
@@ -61,14 +64,14 @@ class Menu {
     
     
     
-    
+    //This is used when the user is done and wants to quit
     func quit() {
         shouldQuit = true
         print("Thanks for using the task manager")
     }
     
     
-    
+    //This lists the menu that the users will see
     func menuOptions() {
         print("""
             Menu
@@ -85,7 +88,7 @@ class Menu {
             """)
     }
     
-    
+    //This takes the functions in the task manager class and uses them 
     func handleInput(_ input: String) {
         switch input {
         case "1":
