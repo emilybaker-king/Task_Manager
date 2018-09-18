@@ -46,6 +46,21 @@ class TaskManager {
             break
         } while taskName == nil
         
+        
+        print("What is the description of your task?")
+        var taskDescription: String? = nil
+        
+        repeat {
+            let line = readLine()
+            
+            if line != "" {
+                taskDescription = line
+            } else {
+                print("Invalid input")
+            }
+            break
+        } while taskDescription == nil
+        
         //this repeat takes user input to make a priority and they have to give one of the three values listed
         var taskPriority: String? = nil
         print("Please enter the priority of the task you added: High: H, Average: A, Low: L")
@@ -60,17 +75,28 @@ class TaskManager {
             }
         } while taskPriority == nil
         
+        if taskPriority == "H" {
+            print("You have 3 days to complete your task")
+        }
+        if taskPriority == "A" {
+            print("You have 5 days to complete your task")
+        }
+        if taskPriority == "L" {
+            print("You have 7 days to complete your task ")
+        }
+        
         //persistence
-        taskArray.append(Task(task: taskName!, priority: taskPriority!))
+        taskArray.append(Task(task: taskName!, priority: taskPriority!, taskDescription: taskDescription!))
         NSKeyedArchiver.archiveRootObject(taskArray, toFile: filePath)
         print("\n")
         print("Your new list of tasks is:")
         
         for task in taskArray {
-            print("\(task.task) : \(task.priority)")
+            print("\(task.task): \(task.taskDescription): \(task.priority)")
         }
         print("\n")
     }
+    
     
     //this removes a task
     func removeTask() {
@@ -100,7 +126,7 @@ class TaskManager {
         print("These are the tasks you need to complete:")
         
         for task in getUnavailableTasks() {
-            print("\(task.task) : \(task.priority)")
+            print("\(task.task): \(task.taskDescription): \(task.priority)")
         }
         
         print("\n")
@@ -112,7 +138,7 @@ class TaskManager {
         
         print("The following tasks are completed:")
         for task in getAvailableTasks() {
-            print("\(task.task) : \(task.priority)")
+            print("\(task.task): \(task.taskDescription): \(task.priority)")
         }
         print("\n")
     }

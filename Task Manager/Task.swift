@@ -18,18 +18,22 @@ class Task: NSObject, NSCoding {
     
      var priority: String
     
-    init(task: String, priority: String) {
+    var taskDescription: String
+    
+    init(task: String, priority: String, taskDescription: String) {
         self.task = task
         self.priority = priority
+        self.taskDescription = taskDescription
     }
     
     
     //this initializes the above variables
-    init(task: String, completed: Bool, dueDate: Date?, priority: String) {
+    init(task: String, completed: Bool, dueDate: Date?, priority: String, taskDescription: String) {
         self.task = task
         self.completed = completed
         self.dueDate = dueDate
         self.priority = priority
+        self.taskDescription = taskDescription
     }
     
     //this is the persistence
@@ -38,6 +42,7 @@ class Task: NSObject, NSCoding {
         aCoder.encode(completed, forKey: "completed")
         aCoder.encode(dueDate, forKey: "dueDate")
         aCoder.encode(priority, forKey: "priority")
+        aCoder.encode(taskDescription, forKey: "taskDescription")
     }
     
     convenience required init?(coder aDecoder: NSCoder) {
@@ -52,12 +57,18 @@ class Task: NSObject, NSCoding {
                 return nil
         }
         
+        guard let taskDescription = aDecoder.decodeObject(forKey: "taskPriority") as? String
+            else {
+                return nil
+        }
+        
+        
         let completed = aDecoder.decodeBool(forKey: "completed")
         
         if let dueDate = aDecoder.decodeObject(forKey: "dueDate") as? Date {
-            self.init(task: task, completed: completed, dueDate: dueDate, priority: priority)
+            self.init(task: task, completed: completed, dueDate: dueDate, priority: priority, taskDescription: taskDescription)
         } else {
-            self.init(task: task, completed: completed, dueDate: nil, priority: priority)
+            self.init(task: task, completed: completed, dueDate: nil, priority: priority, taskDescription: taskDescription)
         }
         
     }
