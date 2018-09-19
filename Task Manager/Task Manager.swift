@@ -67,6 +67,7 @@ class TaskManager {
         repeat {
             let line = readLine()!.trimmingCharacters(in: .whitespacesAndNewlines)
             
+            
             if line == "H" || line == "A" || line == "L" {
                 taskPriority = line
             } else {
@@ -106,18 +107,26 @@ class TaskManager {
             print("\(index). \(taskArray[index].task)")
         }
         
-        print("Enter the number of the task you wish to remove:")
         
         //this removes the task that the user puts in
-        var userInput = Int(readLine()!)
-        while userInput == nil {
-            print("Invalid input. Please enter a usable number")
-            userInput = Int(readLine()!)
-        }
-        print("\n")  
-        taskArray.remove(at: userInput!)
-        NSKeyedArchiver.archiveRootObject(taskArray, toFile: filePath)
-        print("\n")
+        let validInput: Int? = nil
+        repeat {
+            print("Enter the number of the task you wish to remove:")
+            var userInput = Int(readLine()!)
+            while userInput == nil {
+                print("Invalid input. Please enter a number on the list.")
+                userInput = Int(readLine()!)
+            }
+            if userInput! >= taskArray.count {
+                print("Invalid input, please type a number on the list.")
+            } else {
+                print("\n")
+                taskArray.remove(at: userInput!)
+                NSKeyedArchiver.archiveRootObject(taskArray, toFile: filePath)
+                print("\n")
+                break
+            }
+        } while validInput == nil
         
     }
     
